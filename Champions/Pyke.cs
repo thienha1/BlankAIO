@@ -14,15 +14,13 @@ namespace BlankAIO
 {
     class Pyke
     {
-        private static Spell Q, W, E, R, Q2;
-        private static Menu geral;
+        private static Spell Q, E, R;
 
         public static void On_Load()
         {
             Q = new Spell(SpellSlot.Q, 1100);
             Q.SetCharged("PykeQ", "PykeQ", 400, 1030, 1.0f);
             Q.SetSkillshot(0.25f, 120f, 1700, true, false, SkillshotType.Line);
-            W = new Spell(SpellSlot.W, float.MaxValue);
             E = new Spell(SpellSlot.E, 550);
             E.SetSkillshot(0.275f, 70f, 500f, false, false, SkillshotType.Line);
             R = new Spell(SpellSlot.R, 750);
@@ -51,7 +49,6 @@ namespace BlankAIO
 
             var Clear = new Menu("Clear", "Clear Settings");
             Clear.Add(Menubase.Pyke_Clear.Ec);
-            Clear.Add(Menubase.Pyke_Clear.ehit);
 
             var ks = new Menu("killsteal", "KillSteal Settings");
             ks.Add(Menubase.Pyke_KS.R);
@@ -99,7 +96,7 @@ namespace BlankAIO
             {
                 if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && !t.IsZombie && t.IsVisible && t.IsHPBarRendered)
                 {
-                    R.SPredictionCast(t, HitChance.Medium);
+                    R.SPredictionCast(t, HitChance.High);
                 }
             }
         }
@@ -140,11 +137,15 @@ namespace BlankAIO
                 var target = TargetSelector.GetTarget(Q.ChargedMaxRange);
                 if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
                 {
-                    var pred = Q.GetPrediction(target);
-                    if (pred.Hitchance >= qhit)
+                    if (target.DistanceToPlayer() > 800)
                     {
-                        Q.StartCharging();
+                        var pred = Q.GetSPrediction(target);
+                        if (pred.HitChance >= qhit)
+                        {
+                            Q.StartCharging();
+                        }
                     }
+                    
                 }
             }
             if (Q.IsReady() && Q.IsCharging)
@@ -197,10 +198,13 @@ namespace BlankAIO
                 var target = TargetSelector.GetTarget(Q.ChargedMaxRange);
                 if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
                 {
-                    var pred = Q.GetSPrediction(target);
-                    if (pred.HitChance >= qhit)
+                    if (target.DistanceToPlayer() > 800)
                     {
-                        Q.StartCharging();
+                        var pred = Q.GetSPrediction(target);
+                        if (pred.HitChance >= qhit)
+                        {
+                            Q.StartCharging();
+                        }
                     }
                 }
             }
@@ -235,17 +239,17 @@ namespace BlankAIO
         private static void Clear()
         {
 
-            if (Menubase.Pyke_Clear.Ec && E.IsReady())
+            if (Menubase.Pyke_Clear.Ec && Q.IsReady())
             {
                 var minions = GameObjects.EnemyMinions.Where(x => x.IsValidTarget(E.Range) && x.IsMinion())
                             .Cast<AIBaseClient>().ToList();
 
                 if (minions.Any())
                 {
-                    var eFarmLocation = E.GetLineFarmLocation(minions);
-                    if (eFarmLocation.Position.IsValid() && eFarmLocation.MinionsHit >= Menubase.Pyke_Clear.ehit.Value)
+                    var eFarmLocation = Q.GetLineFarmLocation(minions);
+                    if (eFarmLocation.Position.IsValid())
                     {
-                        E.Cast(eFarmLocation.Position);
+                        Q.Cast(eFarmLocation.Position);
                     }
                 }
             }
