@@ -1,0 +1,16 @@
+D:\Blank AIO\obj\x86\Debug\BlankAIO.csprojAssemblyReference.cache
+D:\Blank AIO\obj\x86\Debug\Blank AIO.exe.config
+D:\Blank AIO\obj\x86\Debug\BlankAIO.csproj.CoreCompileInputs.cache
+D:\Blank AIO\bin\Debug\Blank AIO.exe.config
+D:\Blank AIO\bin\Debug\Blank AIO.exe
+D:\Blank AIO\bin\Debug\Blank AIO.pdb
+D:\Blank AIO\bin\Debug\EnsoulSharp.Sandbox.dll
+D:\Blank AIO\bin\Debug\EnsoulSharp.SDK.dll
+D:\Blank AIO\bin\Debug\EnsoulSharp.Wrapper.dll
+D:\Blank AIO\bin\Debug\SharpDX.Direct3D9.dll
+D:\Blank AIO\bin\Debug\SharpDX.dll
+D:\Blank AIO\bin\Debug\SPrediction.dll
+D:\Blank AIO\bin\Debug\Newtonsoft.Json.dll
+D:\Blank AIO\obj\x86\Debug\BlankAIO.csproj.CopyComplete
+D:\Blank AIO\obj\x86\Debug\Blank AIO.exe
+D:\Blank AIO\obj\x86\Debug\Blank AIO.pdb

@@ -1,0 +1,15 @@
+D:\Blank AIO\bin\Release\Blank AIO.exe.config
+D:\Blank AIO\bin\Release\Blank AIO.exe
+D:\Blank AIO\bin\Release\Blank AIO.pdb
+D:\Blank AIO\bin\Release\EnsoulSharp.Sandbox.dll
+D:\Blank AIO\bin\Release\EnsoulSharp.SDK.dll
+D:\Blank AIO\bin\Release\EnsoulSharp.Wrapper.dll
+D:\Blank AIO\bin\Release\SharpDX.Direct3D9.dll
+D:\Blank AIO\bin\Release\SharpDX.dll
+D:\Blank AIO\bin\Release\SPrediction.dll
+D:\Blank AIO\bin\Release\Newtonsoft.Json.dll
+D:\Blank AIO\obj\x86\Release\Blank AIO.exe.config
+D:\Blank AIO\obj\x86\Release\BlankAIO.csproj.CoreCompileInputs.cache
+D:\Blank AIO\obj\x86\Release\BlankAIO.csproj.CopyComplete
+D:\Blank AIO\obj\x86\Release\Blank AIO.exe
+D:\Blank AIO\obj\x86\Release\Blank AIO.pdb
