@@ -18,8 +18,8 @@ namespace BlankAIO
 
         public static void On_Load()
         {
-            Q = new Spell(SpellSlot.Q, 1100);
-            Q.SetCharged("PykeQ", "PykeQ", 400, 1030, 1.0f);
+            Q = new Spell(SpellSlot.Q, 400);
+            Q.SetCharged("PykeQ", "PykeQ", 400, 1100, 1.0f);
             Q.SetSkillshot(0.25f, 120f, 1700, true, false, SkillshotType.Line);
             E = new Spell(SpellSlot.E, 550);
             E.SetSkillshot(0.275f, 70f, 500f, false, false, SkillshotType.Line);
@@ -137,29 +137,44 @@ namespace BlankAIO
                 var target = TargetSelector.GetTarget(Q.ChargedMaxRange);
                 if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
                 {
-                    if (target.DistanceToPlayer() > 800)
+                    if (target.DistanceToPlayer() > 400)
                     {
                         var pred = Q.GetSPrediction(target);
                         if (pred.HitChance >= qhit)
                         {
                             Q.StartCharging();
                         }
+                        else if (Q.IsReady() && Q.IsCharging && target.DistanceToPlayer() < 400)
+                        {
+                            if (target != null && target.IsValidTarget(Q.Range))
+                            {
+                                var predi = Q.GetSPrediction(target);
+                                if (predi.HitChance >= HitChance.High)
+                                {
+                                    Q.ShootChargedSpell(predi.CastPosition);
+                                }
+                            }
+                        }
                     }
-                    
-                }
-            }
-            if (Q.IsReady() && Q.IsCharging)
-            {
-                var target = TargetSelector.GetTarget(Q.Range);
-                if (target != null && target.IsValidTarget(Q.Range))
-                {
-                    var pred = Q.GetSPrediction(target);
-                    if (pred.HitChance >= HitChance.High)
+                    else if (Q.IsReady() && Q.IsCharging && target.InAutoAttackRange())
                     {
-                        Q.ShootChargedSpell(pred.CastPosition);
+                        Q.Cast(target.Position);
+                    }
+                    else
+                    {
+                        if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
+                        {
+                            var predi = Q.GetSPrediction(target);
+                            if (predi.HitChance >= HitChance.High)
+                            {
+                                Q.ShootChargedSpell(predi.CastPosition);
+                            }
+                        }
                     }
                 }
+                
             }
+            
         }
 
         private static void Combo()
@@ -198,25 +213,39 @@ namespace BlankAIO
                 var target = TargetSelector.GetTarget(Q.ChargedMaxRange);
                 if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
                 {
-                    if (target.DistanceToPlayer() > 800)
+                    if (target.DistanceToPlayer() > 400)
                     {
                         var pred = Q.GetSPrediction(target);
                         if (pred.HitChance >= qhit)
                         {
                             Q.StartCharging();
                         }
+                        else if (Q.IsReady() && Q.IsCharging && target.DistanceToPlayer() < 400)
+                        {
+                            if (target != null && target.IsValidTarget(Q.Range))
+                            {
+                                var predi = Q.GetSPrediction(target);
+                                if (predi.HitChance >= HitChance.High)
+                                {
+                                    Q.ShootChargedSpell(predi.CastPosition);
+                                }
+                            }
+                        }
                     }
-                }
-            }
-            if (Q.IsReady() && Q.IsCharging)
-            {
-                var target = TargetSelector.GetTarget(Q.Range);
-                if (target != null && target.IsValidTarget(Q.Range))
-                {
-                    var pred = Q.GetSPrediction(target);
-                    if (pred.HitChance >= qhit)
+                    else if (Q.IsReady() && Q.IsCharging && target.InAutoAttackRange())
                     {
-                        Q.ShootChargedSpell(pred.CastPosition);
+                        Q.Cast(target.Position);
+                    }
+                    else
+                    {
+                        if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
+                        {
+                            var predi = Q.GetSPrediction(target);
+                            if (predi.HitChance >= HitChance.High)
+                            {
+                                Q.ShootChargedSpell(predi.CastPosition);
+                            }
+                        }
                     }
                 }
             }
