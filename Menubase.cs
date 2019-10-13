@@ -19,7 +19,7 @@ namespace BlankAIO
         public class Pyke_Harass
         {
             public static readonly MenuSlider Qhit = new MenuSlider("qhit", "^ Q Hitchance = 1-Low ~ 4-Very High", 3, 1, 4);
-            public static readonly MenuBool Q = new MenuBool("qh", "Use [Q]");
+            public static readonly MenuBool Q = new MenuBool("q", "Use [Q]");
             public static readonly MenuBool E = new MenuBool("e", "Use [E]");
             public static readonly MenuBool Etower = new MenuBool("Etower", "^ Don't use if enemy is under turret");
         }
