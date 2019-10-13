@@ -132,7 +132,7 @@ namespace BlankAIO
                 if (target != null && target.IsValidTarget(E.Range))
                 {
                     if (target.IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
-                    if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position) + E.Range).IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
+                    if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position)).IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
                     var pred = E.GetSPrediction(target);
                     if (pred.HitChance >= qhit)
                     {
@@ -195,7 +195,7 @@ namespace BlankAIO
                 if (target != null && target.IsValidTarget(E.Range))
                 {
                     if (target.IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
-                    if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position) + E.Range).IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
+                    if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position)).IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
                     var pred = E.GetSPrediction(target);
                     if (pred.HitChance >= qhit)
                     {
