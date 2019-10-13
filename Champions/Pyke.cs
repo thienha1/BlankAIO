@@ -40,11 +40,15 @@ namespace BlankAIO
             Combat.Add(Menubase.Pyke_Combat.Q);
             Combat.Add(Menubase.Pyke_Combat.Qhit);
             Combat.Add(Menubase.Pyke_Combat.E);
+            Combat.Add(Menubase.Pyke_Combat.Etower);
             Combat.Add(Menubase.Pyke_Combat.R);
             Combat.Add(Menubase.Pyke_Combat.Rkill);
 
             var harass = new Menu("harass", "Harass Settings");
             harass.Add(Menubase.Pyke_Harass.Q);
+            Combat.Add(Menubase.Pyke_Combat.Qhit);
+            Combat.Add(Menubase.Pyke_Combat.E);
+            Combat.Add(Menubase.Pyke_Combat.Etower);
 
             var Clear = new Menu("Clear", "Clear Settings");
             Clear.Add(Menubase.Pyke_Clear.Ec);
