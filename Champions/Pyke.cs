@@ -92,11 +92,11 @@ namespace BlankAIO
         {
             var al = GameObjects.EnemyHeroes.Where(x => !x.IsDead && x.IsEnemy && !x.IsInvulnerable && x.Health < R.GetDamage(x, DamageStage.Empowered) && x.DistanceToPlayer() < R.Range);
             var t = al.FirstOrDefault(x => x.IsValidTarget(R.Range));
-            if (CanR(t) && t != null && !ObjectManager.Player.IsRecalling())
+            if (t != null && !ObjectManager.Player.IsRecalling())
             {
                 if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && !t.IsZombie && t.IsVisible && t.IsHPBarRendered)
                 {
-                    R.SPredictionCast(t, HitChance.Medium);
+                    R.SPredictionCast(t, HitChance.High);
                 }
             }
         }
@@ -139,15 +139,15 @@ namespace BlankAIO
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        var pred = Q.GetPrediction(target);
-                        if (pred.Hitchance >= qhit && !Q.IsCharging)
+                        var pred = Q.GetSPrediction(target);
+                        if (pred.HitChance >= qhit)
                         {
                             Q.StartCharging();
                         }
-                        if (Q.IsReady() && Q.IsCharging && target.DistanceToPlayer() < 400)
+                        if (Q.IsReady() && Q.IsCharging)
                         {
-                            var predi = Q.GetPrediction(target);
-                            if (predi.Hitchance >= qhit)
+                            var predi = Q.GetSPrediction(target);
+                            if (predi.HitChance >= qhit)
                             {
                                 Q.ShootChargedSpell(predi.CastPosition);
                             }
@@ -160,15 +160,15 @@ namespace BlankAIO
                     else
                     {
                         var targetsrt = TargetSelector.GetTarget(Q.Range);
-                        var pred = Q.GetPrediction(targetsrt);
-                        if (pred.Hitchance >= qhit && !Q.IsCharging)
+                        var pred = Q.GetSPrediction(targetsrt);
+                        if (pred.HitChance >= qhit)
                         {
                             Q.StartCharging();
                         }
                         if (targetsrt != null && targetsrt.IsValidTarget(Q.Range))
                         {
-                            var predi = Q.GetPrediction(targetsrt);
-                            if (predi.Hitchance >= qhit)
+                            var predi = Q.GetSPrediction(targetsrt);
+                            if (predi.HitChance >= qhit)
                             {
                                 Q.ShootChargedSpell(predi.CastPosition);
                             }
@@ -218,17 +218,20 @@ namespace BlankAIO
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        var pred = Q.GetPrediction(target);
-                        if (pred.Hitchance >= qhit && !Q.IsCharging)
+                        var pred = Q.GetSPrediction(target);
+                        if (pred.HitChance >= qhit)
                         {
                             Q.StartCharging();
                         }
-                        if (Q.IsReady() && Q.IsCharging && target.DistanceToPlayer() < 400)
+                        else if (Q.IsReady() && Q.IsCharging && target.DistanceToPlayer() < 400)
                         {
-                            var predi = Q.GetPrediction(target);
-                            if (predi.Hitchance >= qhit)
+                            if (target != null && target.IsValidTarget(Q.Range))
                             {
-                                Q.ShootChargedSpell(predi.CastPosition);
+                                var predi = Q.GetSPrediction(target);
+                                if (predi.HitChance >= qhit)
+                                {
+                                    Q.ShootChargedSpell(predi.CastPosition);
+                                }
                             }
                         }
                     }
@@ -238,16 +241,10 @@ namespace BlankAIO
                     }
                     else
                     {
-                        var targetsrt = TargetSelector.GetTarget(Q.Range);
-                        var pred = Q.GetPrediction(targetsrt);
-                        if (pred.Hitchance >= qhit && !Q.IsCharging)
+                        if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
                         {
-                            Q.StartCharging();
-                        }
-                        if (targetsrt != null && targetsrt.IsValidTarget(Q.Range))
-                        {
-                            var predi = Q.GetPrediction(targetsrt);
-                            if (predi.Hitchance >= qhit)
+                            var predi = Q.GetSPrediction(target);
+                            if (predi.HitChance >= qhit)
                             {
                                 Q.ShootChargedSpell(predi.CastPosition);
                             }
@@ -258,7 +255,7 @@ namespace BlankAIO
             if (R.IsReady() && Menubase.Pyke_Combat.R.Enabled)
             {
                 var rt = TargetSelector.GetTarget(R.Range);
-                if (CanR(rt) && rt != null && rt.IsValidTarget(R.Range))
+                if (rt != null && rt.IsValidTarget(R.Range))
                 {
                     if (Menubase.Pyke_Combat.Rkill.Enabled && rt.Health > R.GetDamage(rt, DamageStage.Empowered))
                     {
@@ -266,28 +263,10 @@ namespace BlankAIO
                     }
                     if (!rt.IsDead && !rt.IsZombie && rt.IsVisible && rt.IsHPBarRendered)
                     {
-                        R.SPredictionCast(rt, HitChance.Medium);
+                        R.SPredictionCast(rt, HitChance.High);
                     }
                 }
             }
-        }
-        public static bool CanR(AIHeroClient tarR)
-        {
-            if (tarR.HasBuffOfType(BuffType.Invulnerability)
-                                && tarR.HasBuffOfType(BuffType.SpellShield)
-                                && tarR.HasBuff("kindredrnodeathbuff") //Kindred Ult
-                                && tarR.HasBuff("BlitzcrankManaBarrierCD") //Blitz Passive
-                                && tarR.HasBuff("ManaBarrier") //Blitz Passive
-                                && tarR.HasBuff("FioraW") //Fiora W
-                                && tarR.HasBuff("JudicatorIntervention") //Kayle R
-                                && tarR.HasBuff("UndyingRage") //Trynd R
-                                && tarR.HasBuff("BardRStasis") //Bard R
-                                && tarR.HasBuff("ChronoShift") //Zilean R
-                                )
-            {
-                return false;
-            }
-            return true;
         }
         private static void Clear()
         {
