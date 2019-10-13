@@ -18,7 +18,7 @@ namespace BlankAIO
 
         public static void On_Load()
         {
-            Q = new Spell(SpellSlot.Q, 400);
+            Q = new Spell(SpellSlot.Q, 1100);
             Q.SetCharged("PykeQ", "PykeQ", 400, 1100, 1.0f);
             Q.SetSkillshot(0.25f, 120f, 1700, true, false, SkillshotType.Line);
             E = new Spell(SpellSlot.E, 550);
@@ -92,6 +92,7 @@ namespace BlankAIO
         {
             var al = GameObjects.EnemyHeroes.Where(x => !x.IsDead && x.IsEnemy && !x.IsInvulnerable && x.Health < R.GetDamage(x, DamageStage.Empowered) && x.DistanceToPlayer() < R.Range);
             var t = al.FirstOrDefault(x => x.IsValidTarget(R.Range));
+            if (t == null) return;
             if (CanR(t) && t != null && !ObjectManager.Player.IsRecalling())
             {
                 if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && !t.IsZombie && t.IsVisible && t.IsHPBarRendered)
@@ -106,6 +107,7 @@ namespace BlankAIO
             if (!Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.E.Enabled)
             {
                 var target = TargetSelector.GetTarget(E.Range);
+                if (target == null) return;
                 if (target != null && target.IsValidTarget(E.Range))
                 {
                     var pred = E.GetSPrediction(target);
@@ -135,6 +137,7 @@ namespace BlankAIO
             if (Q.IsReady() && Menubase.Pyke_Combat.Q.Enabled)
             {
                 var target = TargetSelector.GetTarget(Q.ChargedMaxRange);
+                if (target == null) return;
                 if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
                 {
                     if (target.DistanceToPlayer() > 400)
@@ -144,22 +147,23 @@ namespace BlankAIO
                         {
                             Q.StartCharging();
                         }
-                        if (Q.IsReady() && Q.IsCharging && target.DistanceToPlayer() < 400)
+                        if (Q.IsReady() && Q.IsCharging || target.DistanceToPlayer() < 400)
                         {
-                            var predi = Q.GetPrediction(target);
-                            if (predi.Hitchance >= qhit)
+                            var predi = Q.GetSPrediction(target);
+                            if (predi.HitChance >= qhit)
                             {
-                                Q.ShootChargedSpell(predi.CastPosition);
+                                Q.SPredictionCast(target, qhit);
                             }
                         }
                     }
-                    else if (Q.IsReady() && Q.IsCharging && target.InAutoAttackRange())
+                    else if (Q.IsReady() && Q.IsCharging || target.InAutoAttackRange())
                     {
                         Q.Cast(target.Position);
                     }
                     else
                     {
                         var targetsrt = TargetSelector.GetTarget(Q.Range);
+                        if (targetsrt == null) return;
                         var pred = Q.GetPrediction(targetsrt);
                         if (pred.Hitchance >= qhit && !Q.IsCharging)
                         {
@@ -167,10 +171,10 @@ namespace BlankAIO
                         }
                         if (targetsrt != null && targetsrt.IsValidTarget(Q.Range))
                         {
-                            var predi = Q.GetPrediction(targetsrt);
-                            if (predi.Hitchance >= qhit)
+                            var predi = Q.GetSPrediction(targetsrt);
+                            if (predi.HitChance >= qhit)
                             {
-                                Q.ShootChargedSpell(predi.CastPosition);
+                                Q.SPredictionCast(target, qhit);
                             }
                         }
                     }
@@ -202,6 +206,7 @@ namespace BlankAIO
             if (!Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.E.Enabled)
             {
                 var target = TargetSelector.GetTarget(E.Range);
+                if (target == null) return;
                 if (target != null && target.IsValidTarget(E.Range))
                 {
                     var pred = E.GetSPrediction(target);
@@ -214,6 +219,7 @@ namespace BlankAIO
             if (Q.IsReady() && Menubase.Pyke_Combat.Q.Enabled)
             {
                 var target = TargetSelector.GetTarget(Q.ChargedMaxRange);
+                if (target == null) return;
                 if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
                 {
                     if (target.DistanceToPlayer() > 400)
@@ -223,22 +229,23 @@ namespace BlankAIO
                         {
                             Q.StartCharging();
                         }
-                        if (Q.IsReady() && Q.IsCharging && target.DistanceToPlayer() < 400)
+                        if (Q.IsReady() && Q.IsCharging || target.DistanceToPlayer() < 400)
                         {
                             var predi = Q.GetPrediction(target);
                             if (predi.Hitchance >= qhit)
                             {
-                                Q.ShootChargedSpell(predi.CastPosition);
+                                Q.SPredictionCast(target, qhit);
                             }
                         }
                     }
-                    else if (Q.IsReady() && Q.IsCharging && target.InAutoAttackRange())
+                    else if (Q.IsReady() && Q.IsCharging || target.InAutoAttackRange())
                     {
                         Q.Cast(target.Position);
                     }
                     else
                     {
                         var targetsrt = TargetSelector.GetTarget(Q.Range);
+                        if (targetsrt == null) return;
                         var pred = Q.GetPrediction(targetsrt);
                         if (pred.Hitchance >= qhit && !Q.IsCharging)
                         {
@@ -246,10 +253,10 @@ namespace BlankAIO
                         }
                         if (targetsrt != null && targetsrt.IsValidTarget(Q.Range))
                         {
-                            var predi = Q.GetPrediction(targetsrt);
-                            if (predi.Hitchance >= qhit)
+                            var predi = Q.GetSPrediction(targetsrt);
+                            if (predi.HitChance >= qhit)
                             {
-                                Q.ShootChargedSpell(predi.CastPosition);
+                                Q.SPredictionCast(target, qhit);
                             }
                         }
                     }
@@ -257,7 +264,8 @@ namespace BlankAIO
             }
             if (R.IsReady() && Menubase.Pyke_Combat.R.Enabled)
             {
-                var rt = TargetSelector.GetTarget(R.Range);
+                var rt = TargetSelector.GetTarget(R.Range, DamageType.True);
+                if (rt == null) return;
                 if (CanR(rt) && rt != null && rt.IsValidTarget(R.Range))
                 {
                     if (Menubase.Pyke_Combat.Rkill.Enabled && rt.Health > R.GetDamage(rt, DamageStage.Empowered))
@@ -271,7 +279,7 @@ namespace BlankAIO
                 }
             }
         }
-        public static bool CanR(AIBaseClient tarR)
+        internal static bool CanR(AIBaseClient tarR)
         {
             if (tarR.HasBuffOfType(BuffType.Invulnerability)
                                 && tarR.HasBuffOfType(BuffType.SpellShield)
