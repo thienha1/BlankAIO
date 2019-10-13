@@ -5,8 +5,8 @@ namespace BlankAIO
     {
         public class Pyke_Combat
         {
-            public static readonly MenuBool QC = new MenuBool("qh", "Use [Q]");
             public static readonly MenuSlider QhitC = new MenuSlider("qhit", "^ Q Hitchance = 1-Low ~ 4-Very High", 3, 1, 4);
+            public static readonly MenuBool QC = new MenuBool("q", "Use [Q]");
             public static readonly MenuBool EC = new MenuBool("e", "Use [E]");
             public static readonly MenuBool EtowerC = new MenuBool("Etower", "^ Don't use if enemy is under turret");
             public static readonly MenuBool RC = new MenuBool("r", "Use [R]");
