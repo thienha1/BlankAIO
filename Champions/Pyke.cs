@@ -196,7 +196,7 @@ namespace BlankAIO
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        if (Q.IsReady() && !Q.IsCharging)
+                        if (Q.IsReady() && !Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.EC.Enabled)
                         {
                             Q.StartCharging();
                         }
