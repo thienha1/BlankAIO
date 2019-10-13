@@ -192,7 +192,7 @@ namespace BlankAIO
                 if (target == null) return;
                 if (target != null && target.IsValidTarget(E.Range))
                 {
-                    if (target.IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
+                    if (target.IsUnderEnemyTurret() && Menubase.Pyke_Combat.Etower.Enabled) return;
                     var pred = E.GetSPrediction(target);
                     if (pred.HitChance >= qhit)
                     {
