@@ -92,7 +92,7 @@ namespace BlankAIO
         {
             var al = GameObjects.EnemyHeroes.Where(x => !x.IsDead && x.IsEnemy && !x.IsInvulnerable && x.Health < R.GetDamage(x, DamageStage.Empowered) && x.DistanceToPlayer() < R.Range);
             var t = al.FirstOrDefault(x => x.IsValidTarget(R.Range));
-            if (CanR(t) && t != null && !ObjectManager.Player.IsRecalling())
+            if (t != null && !ObjectManager.Player.IsRecalling())
             {
                 if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && !t.IsZombie && t.IsVisible && t.IsHPBarRendered)
                 {
