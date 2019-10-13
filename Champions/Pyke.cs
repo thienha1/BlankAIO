@@ -5,7 +5,7 @@ using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
 using SPrediction;
 using System;
-using System.Collections.Generic;
+using SharpDX;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +15,7 @@ namespace BlankAIO
     class Pyke
     {
         private static Spell Q, E, R;
+        private static AIHeroClient player = ObjectManager.Player;
 
         public static void On_Load()
         {
@@ -37,12 +38,12 @@ namespace BlankAIO
             var geral = new Menu("menu.base", "thienha1.Pyke", true);
 
             var Combat = new Menu("Pyke_Combat", "Combo Settings");
-            Combat.Add(Menubase.Pyke_Combat.Qhit);
-            Combat.Add(Menubase.Pyke_Combat.Q);
-            Combat.Add(Menubase.Pyke_Combat.E);
-            Combat.Add(Menubase.Pyke_Combat.Etower);
-            Combat.Add(Menubase.Pyke_Combat.R);
-            Combat.Add(Menubase.Pyke_Combat.Rkill);
+            Combat.Add(Menubase.Pyke_Combat.QhitC);
+            Combat.Add(Menubase.Pyke_Combat.QC);
+            Combat.Add(Menubase.Pyke_Combat.EC);
+            Combat.Add(Menubase.Pyke_Combat.EtowerC);
+            Combat.Add(Menubase.Pyke_Combat.RC);
+            Combat.Add(Menubase.Pyke_Combat.RkillC);
 
             var harass = new Menu("harass", "Harass Settings");
             harass.Add(Menubase.Pyke_Harass.Qhit);
@@ -131,6 +132,7 @@ namespace BlankAIO
                 if (target != null && target.IsValidTarget(E.Range))
                 {
                     if (target.IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
+                    if (player.PreviousPosition.Extend(target.PreviousPosition, Vector3.Distance(player.PreviousPosition, target.PreviousPosition) + E.Range).IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
                     var pred = E.GetSPrediction(target);
                     if (pred.HitChance >= qhit)
                     {
@@ -169,7 +171,7 @@ namespace BlankAIO
 
         private static void Combo()
         {
-            var qvalue = Menubase.Pyke_Combat.Qhit.Value;
+            var qvalue = Menubase.Pyke_Combat.QhitC.Value;
             var qhit = HitChance.High;
             switch (qvalue)
             {
@@ -186,13 +188,14 @@ namespace BlankAIO
                     qhit = HitChance.VeryHigh;
                     break;
             }
-            if (!Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.E.Enabled)
+            if (!Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.EC.Enabled)
             {
                 var target = TargetSelector.GetTarget(E.Range);
                 if (target == null) return;
                 if (target != null && target.IsValidTarget(E.Range))
                 {
-                    if (target.IsUnderEnemyTurret() && Menubase.Pyke_Combat.Etower.Enabled) return;
+                    if (target.IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
+                    if (player.PreviousPosition.Extend(target.PreviousPosition, Vector3.Distance(player.PreviousPosition, target.PreviousPosition) + E.Range).IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
                     var pred = E.GetSPrediction(target);
                     if (pred.HitChance >= qhit)
                     {
@@ -200,7 +203,7 @@ namespace BlankAIO
                     }
                 }
             }
-            if (Q.IsReady() && Menubase.Pyke_Combat.Q.Enabled)
+            if (Q.IsReady() && Menubase.Pyke_Combat.QC.Enabled)
             {
                 var target = TargetSelector.GetTarget(Q.Range);
                 if (target == null) return;
@@ -227,13 +230,13 @@ namespace BlankAIO
                     }
                 }
             }
-            if (R.IsReady() && Menubase.Pyke_Combat.R.Enabled)
+            if (R.IsReady() && Menubase.Pyke_Combat.RC.Enabled)
             {
                 var rt = TargetSelector.GetTarget(R.Range, DamageType.True);
                 if (rt == null) return;
                 if (CanR(rt) && rt != null && rt.IsValidTarget(R.Range))
                 {
-                    if (Menubase.Pyke_Combat.Rkill.Enabled && rt.Health > R.GetDamage(rt, DamageStage.Empowered))
+                    if (Menubase.Pyke_Combat.RkillC.Enabled && rt.Health > R.GetDamage(rt, DamageStage.Empowered))
                     {
                         return;
                     }
