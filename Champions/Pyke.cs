@@ -125,7 +125,7 @@ namespace BlankAIO
                     qhit = HitChance.VeryHigh;
                     break;
             }
-            if (!Q.IsCharging && E.IsReady() && Menubase.Pyke_Harass.E.Enabled)
+            if (!Q.IsReady() || !Q.IsCharging && E.IsReady() && Menubase.Pyke_Harass.E.Enabled)
             {
                 var target = TargetSelector.GetTarget(E.Range);
                 if (target == null) return;
@@ -148,11 +148,11 @@ namespace BlankAIO
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        if (Q.IsReady() && !Q.IsCharging)
+                        if (!Q.IsCharging)
                         {
                             Q.StartCharging();
                         }
-                        if (Q.IsReady() && Q.IsCharging || target.DistanceToPlayer() < 400)
+                        if (Q.IsCharging || target.DistanceToPlayer() < 400)
                         {
                             var predi = Q.GetSPrediction(target);
                             if (predi.HitChance >= qhit)
@@ -188,7 +188,7 @@ namespace BlankAIO
                     qhit = HitChance.VeryHigh;
                     break;
             }
-            if (!Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.EC.Enabled)
+            if (!Q.IsReady() || !Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.EC.Enabled)
             {
                 var target = TargetSelector.GetTarget(E.Range);
                 if (target == null) return;
@@ -211,11 +211,11 @@ namespace BlankAIO
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        if (Q.IsReady() && !Q.IsCharging)
+                        if (!Q.IsCharging)
                         {
                             Q.StartCharging();
                         }
-                        if (Q.IsReady() && Q.IsCharging || target.DistanceToPlayer() < 400)
+                        if (Q.IsCharging || target.DistanceToPlayer() < 400)
                         {
                             var predi = Q.GetSPrediction(target);
                             if (predi.HitChance >= qhit)
@@ -224,7 +224,7 @@ namespace BlankAIO
                             }
                         }
                     }
-                    else if (Q.IsReady() && Q.IsCharging || target.InAutoAttackRange())
+                    else if (Q.IsCharging || target.InAutoAttackRange())
                     {
                         Q.Cast(target.Position);
                     }
