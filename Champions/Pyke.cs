@@ -136,14 +136,13 @@ namespace BlankAIO
             }
             if (Q.IsReady() && Menubase.Pyke_Combat.Q.Enabled)
             {
-                var target = TargetSelector.GetTarget(Q.ChargedMaxRange);
+                var target = TargetSelector.GetTarget(Q.Range);
                 if (target == null) return;
-                if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
+                if (target != null && target.IsValidTarget(Q.Range))
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        var pred = Q.GetPrediction(target);
-                        if (pred.Hitchance >= qhit && !Q.IsCharging)
+                        if (Q.IsReady() && !Q.IsCharging)
                         {
                             Q.StartCharging();
                         }
@@ -160,28 +159,8 @@ namespace BlankAIO
                     {
                         Q.Cast(target.Position);
                     }
-                    else
-                    {
-                        var targetsrt = TargetSelector.GetTarget(Q.Range);
-                        if (targetsrt == null) return;
-                        var pred = Q.GetPrediction(targetsrt);
-                        if (pred.Hitchance >= qhit && !Q.IsCharging)
-                        {
-                            Q.StartCharging();
-                        }
-                        if (targetsrt != null && targetsrt.IsValidTarget(Q.Range))
-                        {
-                            var predi = Q.GetSPrediction(targetsrt);
-                            if (predi.HitChance >= qhit)
-                            {
-                                Q.SPredictionCast(target, qhit);
-                            }
-                        }
-                    }
                 }
-                
             }
-            
         }
 
         private static void Combo()
@@ -218,21 +197,20 @@ namespace BlankAIO
             }
             if (Q.IsReady() && Menubase.Pyke_Combat.Q.Enabled)
             {
-                var target = TargetSelector.GetTarget(Q.ChargedMaxRange);
+                var target = TargetSelector.GetTarget(Q.Range);
                 if (target == null) return;
-                if (target != null && target.IsValidTarget(Q.ChargedMaxRange))
+                if (target != null && target.IsValidTarget(Q.Range))
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        var pred = Q.GetPrediction(target);
-                        if (pred.Hitchance >= qhit && !Q.IsCharging)
+                        if (Q.IsReady() && !Q.IsCharging)
                         {
                             Q.StartCharging();
                         }
                         if (Q.IsReady() && Q.IsCharging || target.DistanceToPlayer() < 400)
                         {
-                            var predi = Q.GetPrediction(target);
-                            if (predi.Hitchance >= qhit)
+                            var predi = Q.GetSPrediction(target);
+                            if (predi.HitChance >= qhit)
                             {
                                 Q.SPredictionCast(target, qhit);
                             }
@@ -241,24 +219,6 @@ namespace BlankAIO
                     else if (Q.IsReady() && Q.IsCharging || target.InAutoAttackRange())
                     {
                         Q.Cast(target.Position);
-                    }
-                    else
-                    {
-                        var targetsrt = TargetSelector.GetTarget(Q.Range);
-                        if (targetsrt == null) return;
-                        var pred = Q.GetPrediction(targetsrt);
-                        if (pred.Hitchance >= qhit && !Q.IsCharging)
-                        {
-                            Q.StartCharging();
-                        }
-                        if (targetsrt != null && targetsrt.IsValidTarget(Q.Range))
-                        {
-                            var predi = Q.GetSPrediction(targetsrt);
-                            if (predi.HitChance >= qhit)
-                            {
-                                Q.SPredictionCast(target, qhit);
-                            }
-                        }
                     }
                 }
             }
