@@ -104,6 +104,7 @@ namespace BlankAIO
 
         private static void Harass()
         {
+            if (!Menubase.Pyke_Combat.E.Enabled) return;
             if (!Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.E.Enabled)
             {
                 var target = TargetSelector.GetTarget(E.Range);
