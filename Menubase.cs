@@ -14,13 +14,11 @@ namespace BlankAIO
         }
         public class Pyke_Clear
         {
-            public static readonly MenuBool Ec = new MenuBool("ec", "Use [E]");
-            public static readonly MenuSlider ehit = new MenuSlider("ehit", "^ Min. Minions Hit to use E", 3, 1, 6);
+            public static readonly MenuBool Ec = new MenuBool("ec", "Use [Q]");
         }
         public class Pyke_Harass
         {
             public static readonly MenuBool Q = new MenuBool("qh", "Use [Q]");
-            public static readonly MenuBool E = new MenuBool("eh", "Use [E]");
         }
         public class Pyke_KS
         {
