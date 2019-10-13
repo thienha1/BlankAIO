@@ -125,22 +125,7 @@ namespace BlankAIO
                     qhit = HitChance.VeryHigh;
                     break;
             }
-            if (!Q.IsReady() || !Q.IsCharging && E.IsReady() && Menubase.Pyke_Harass.E.Enabled)
-            {
-                var target = TargetSelector.GetTarget(E.Range);
-                if (target == null) return;
-                if (target != null && target.IsValidTarget(E.Range))
-                {
-                    if (target.IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
-                    if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position)).IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
-                    var pred = E.GetSPrediction(target);
-                    if (pred.HitChance >= qhit)
-                    {
-                        E.SPredictionCast(target, qhit);
-                    }
-                }
-            }
-            if (Q.IsReady() && Menubase.Pyke_Harass.Q.Enabled)
+            if (Menubase.Pyke_Harass.Q.Enabled)
             {
                 var target = TargetSelector.GetTarget(Q.Range);
                 if (target == null) return;
@@ -148,7 +133,7 @@ namespace BlankAIO
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        if (!Q.IsCharging)
+                        if (Q.IsReady() && !Q.IsCharging)
                         {
                             Q.StartCharging();
                         }
@@ -164,6 +149,21 @@ namespace BlankAIO
                     else if (Q.IsReady() && Q.IsCharging || target.InAutoAttackRange())
                     {
                         Q.Cast(target.Position);
+                    }
+                }
+            }
+            if (!Q.IsReady() || !Q.IsCharging && E.IsReady() && Menubase.Pyke_Harass.E.Enabled)
+            {
+                var target = TargetSelector.GetTarget(E.Range);
+                if (target == null) return;
+                if (target != null && target.IsValidTarget(E.Range))
+                {
+                    if (target.IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
+                    if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position)).IsUnderEnemyTurret() && Menubase.Pyke_Harass.Etower.Enabled) return;
+                    var pred = E.GetSPrediction(target);
+                    if (pred.HitChance >= qhit)
+                    {
+                        E.SPredictionCast(target, qhit);
                     }
                 }
             }
@@ -188,22 +188,7 @@ namespace BlankAIO
                     qhit = HitChance.VeryHigh;
                     break;
             }
-            if (!Q.IsReady() || !Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.EC.Enabled)
-            {
-                var target = TargetSelector.GetTarget(E.Range);
-                if (target == null) return;
-                if (target != null && target.IsValidTarget(E.Range))
-                {
-                    if (target.IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
-                    if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position)).IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
-                    var pred = E.GetSPrediction(target);
-                    if (pred.HitChance >= qhit)
-                    {
-                        E.SPredictionCast(target, qhit);
-                    }
-                }
-            }
-            if (Q.IsReady() && Menubase.Pyke_Combat.QC.Enabled)
+            if (Menubase.Pyke_Combat.QC.Enabled)
             {
                 var target = TargetSelector.GetTarget(Q.Range);
                 if (target == null) return;
@@ -211,7 +196,7 @@ namespace BlankAIO
                 {
                     if (target.DistanceToPlayer() > 400)
                     {
-                        if (!Q.IsCharging)
+                        if (Q.IsReady() && !Q.IsCharging)
                         {
                             Q.StartCharging();
                         }
@@ -224,9 +209,24 @@ namespace BlankAIO
                             }
                         }
                     }
-                    else if (Q.IsCharging || target.InAutoAttackRange())
+                    else if (Q.IsReady() && Q.IsCharging || target.InAutoAttackRange())
                     {
                         Q.Cast(target.Position);
+                    }
+                }
+            }
+            if (!Q.IsReady() || !Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.EC.Enabled)
+            {
+                var target = TargetSelector.GetTarget(E.Range);
+                if (target == null) return;
+                if (target != null && target.IsValidTarget(E.Range))
+                {
+                    if (target.IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
+                    if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position)).IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
+                    var pred = E.GetSPrediction(target);
+                    if (pred.HitChance >= qhit)
+                    {
+                        E.SPredictionCast(target, qhit);
                     }
                 }
             }
