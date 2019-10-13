@@ -45,7 +45,6 @@ namespace BlankAIO
 
             var harass = new Menu("harass", "Harass Settings");
             harass.Add(Menubase.Pyke_Harass.Q);
-            harass.Add(Menubase.Pyke_Harass.E);
 
             var Clear = new Menu("Clear", "Clear Settings");
             Clear.Add(Menubase.Pyke_Clear.Ec);
@@ -104,20 +103,6 @@ namespace BlankAIO
 
         private static void Harass()
         {
-            if (!Menubase.Pyke_Combat.E.Enabled) return;
-            if (!Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.E.Enabled)
-            {
-                var target = TargetSelector.GetTarget(E.Range);
-                if (target == null) return;
-                if (target != null && target.IsValidTarget(E.Range))
-                {
-                    var pred = E.GetSPrediction(target);
-                    if (pred.HitChance >= HitChance.High)
-                    {
-                        E.SPredictionCast(target, HitChance.High);
-                    }
-                }
-            }
             var qvalue = Menubase.Pyke_Combat.Qhit.Value;
             var qhit = HitChance.High;
             switch (qvalue)
