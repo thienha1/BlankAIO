@@ -14,7 +14,7 @@ namespace BlankAIO
 {
     class Pyke
     {
-        private static Spell Q, E, R;
+        private static Spell Q, W, E, R;
         private static AIHeroClient player = ObjectManager.Player;
 
         public static void On_Load()
@@ -22,6 +22,7 @@ namespace BlankAIO
             Q = new Spell(SpellSlot.Q, 1100);
             Q.SetCharged("PykeQ", "PykeQ", 400, 1100, 1.0f);
             Q.SetSkillshot(0.25f, 120f, 1700, true, false, SkillshotType.Line);
+            W = new Spell(SpellSlot.W, 0);
             E = new Spell(SpellSlot.E, 550);
             E.SetSkillshot(0.275f, 70f, 500f, false, false, SkillshotType.Line);
             R = new Spell(SpellSlot.R, 750);
@@ -81,6 +82,7 @@ namespace BlankAIO
             {
                 case OrbwalkerMode.Combo:
                     Combo();
+                    EAlies();
                     break;
                 case OrbwalkerMode.Harass:
                     Harass();
@@ -88,6 +90,15 @@ namespace BlankAIO
                 case OrbwalkerMode.LaneClear:
                     Clear();
                     break;
+            }
+            if (Menubase.Pyke_misc.escEW.Active)
+            {
+                player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPosCenter);
+                if (E.IsReady() && W.IsReady())
+                {
+                    E.Cast(Game.CursorPosCenter);
+                    W.Cast(Game.CursorPosCenter);
+                }
             }
         }
 
@@ -246,6 +257,39 @@ namespace BlankAIO
                     }
                 }
             }
+        }
+        private static void EAlies()
+        {
+            var swvalue = Menubase.Pyke_Combat.ECCC.Value;
+            switch (swvalue)
+            {
+                case 0:
+                    return;
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    var target = TargetSelector.GetTarget(E.Range);
+                    if (player.CountAllyHeroesInRange(Q.Range) > 1)
+                    {
+                        if (!Q.IsReady() || !Q.IsCharging && E.IsReady() && Menubase.Pyke_Combat.EC.Enabled)
+                        {
+                            if (target == null) return;
+                            if (target != null && target.IsValidTarget(E.Range))
+                            {
+                                if (target.IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
+                                if (player.Position.Extend(target.Position, Vector3.Distance(player.Position, target.Position)).IsUnderEnemyTurret() && Menubase.Pyke_Combat.EtowerC.Enabled) return;
+                                if (target.CountEnemyHeroesInRange(E.Range) >= Menubase.Pyke_Combat.ECCC.Value)
+                                {
+                                    E.CastIfWillHit(target, Menubase.Pyke_Combat.ECCC.Value);
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+            
         }
         internal static bool CanR(AIBaseClient tarR)
         {
