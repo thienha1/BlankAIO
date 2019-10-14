@@ -1,4 +1,5 @@
-﻿using EnsoulSharp.SDK.MenuUI.Values;
+﻿using System.Windows.Forms;
+using EnsoulSharp.SDK.MenuUI.Values;
 namespace BlankAIO
 {
     class Menubase
@@ -9,6 +10,7 @@ namespace BlankAIO
             public static readonly MenuBool QC = new MenuBool("q", "Use [Q]");
             public static readonly MenuBool EC = new MenuBool("e", "Use [E]");
             public static readonly MenuBool EtowerC = new MenuBool("Etower", "^ Don't use if enemy is under turret");
+            public static readonly MenuSlider ECCC = new MenuSlider("ecc", "E if enemies in CC = 0 ~ 5 (1 is default) (0 is disable) and alies closer", 1, 0, 5);
             public static readonly MenuBool RC = new MenuBool("r", "Use [R]");
             public static readonly MenuBool RkillC = new MenuBool("rkill", "^Only if Enemy is Killable");
         }
@@ -30,6 +32,7 @@ namespace BlankAIO
         public class Pyke_misc
         {
             public static readonly MenuBool draw = new MenuBool("draw", "Draw Q Min/Max Range");
+            public static readonly MenuKeyBind escEW = new MenuKeyBind("escEw", "Use EW to Escape", Keys.T, KeyBindType.Press);
         }
     }
 }
