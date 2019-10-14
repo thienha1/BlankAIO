@@ -43,6 +43,7 @@ namespace BlankAIO
             Combat.Add(Menubase.Pyke_Combat.QC);
             Combat.Add(Menubase.Pyke_Combat.EC);
             Combat.Add(Menubase.Pyke_Combat.EtowerC);
+            Combat.Add(Menubase.Pyke_Combat.ECCC);
             Combat.Add(Menubase.Pyke_Combat.RC);
             Combat.Add(Menubase.Pyke_Combat.RkillC);
 
@@ -60,6 +61,7 @@ namespace BlankAIO
 
             var misc = new Menu("misc", "Misc Settings");
             misc.Add(Menubase.Pyke_misc.draw);
+            misc.Add(Menubase.Pyke_misc.escEW);
 
             var pred = new Menu("spred", "Spred");
 
