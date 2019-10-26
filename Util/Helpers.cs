@@ -65,7 +65,7 @@ namespace BlankAIO.Util
 
         public static void PrintMessage(string message)
         {
-            Chat.Print("<font color='#15C3AC'>BlankAIO:</font> <font color='#FFFFFF'>" + message + "</font>");
+            Game.Print("<font color='#15C3AC'>BlankAIO:</font> <font color='#FFFFFF'>" + message + "</font>");
         }
 
         public static bool EnemyInRange(int numOfEnemy, float range)
