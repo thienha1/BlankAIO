@@ -30,7 +30,7 @@ namespace BlankAIO
 
 
             CreateMenu();
-            Game.OnTick += OnTick;
+            Game.OnUpdate += OnTick;
             Drawing.OnDraw += OnDraw;
         }
 
@@ -95,11 +95,11 @@ namespace BlankAIO
             }
             if (Menubase.Pyke_misc.escEW.Active)
             {
-                player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPosCenter);
+                player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                 if (E.IsReady() && W.IsReady())
                 {
-                    E.Cast(Game.CursorPosCenter);
-                    W.Cast(Game.CursorPosCenter);
+                    E.Cast(Game.CursorPos);
+                    W.Cast(Game.CursorPos);
                 }
             }
         }
@@ -110,9 +110,9 @@ namespace BlankAIO
             var al = GameObjects.EnemyHeroes.Where(x => !x.IsDead && x.IsEnemy && !x.IsInvulnerable && x.Health < R.GetDamage(x, DamageStage.Empowered) && x.DistanceToPlayer() < R.Range);
             var t = al.FirstOrDefault(x => x.IsValidTarget(R.Range));
             if (t == null) return;
-            if (CanR(t) && t != null && !ObjectManager.Player.IsRecalling())
+            if (t != null && !ObjectManager.Player.IsRecalling())
             {
-                if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && !t.IsZombie && t.IsVisible && t.IsHPBarRendered)
+                if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && CanR(t) && !t.IsDead && !t.IsValid && t.IsVisible && t.IsHPBarRendered)
                 {
                     R.SPredictionCast(t, HitChance.Medium);
                 }
@@ -247,13 +247,13 @@ namespace BlankAIO
             {
                 var rt = TargetSelector.GetTarget(R.Range, DamageType.True);
                 if (rt == null) return;
-                if (CanR(rt) && rt != null && rt.IsValidTarget(R.Range))
+                if (rt != null && rt.IsValidTarget(R.Range))
                 {
                     if (Menubase.Pyke_Combat.RkillC.Enabled && rt.Health > R.GetDamage(rt, DamageStage.Empowered))
                     {
                         return;
                     }
-                    if (!rt.IsDead && !rt.IsZombie && rt.IsVisible && rt.IsHPBarRendered)
+                    if (CanR(rt) && !rt.IsDead && !rt.IsValid && rt.IsVisible && rt.IsHPBarRendered)
                     {
                         R.SPredictionCast(rt, HitChance.Medium);
                     }
