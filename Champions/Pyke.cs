@@ -9,6 +9,7 @@ using SharpDX;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EnsoulSharp.SDK.Events;
 
 namespace BlankAIO
 {
@@ -30,7 +31,7 @@ namespace BlankAIO
 
 
             CreateMenu();
-            Game.OnUpdate += OnTick;
+            Tick.OnTick += OnTick;
             Drawing.OnDraw += OnDraw;
         }
 
