@@ -113,7 +113,7 @@ namespace BlankAIO
             if (t == null) return;
             if (t != null && !ObjectManager.Player.IsRecalling())
             {
-                if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && t.IsVisible && t.IsHPBarRendered)
+                if (CanR(t) && Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && t.IsVisible && t.IsHPBarRendered)
                 {
                     R.SPredictionCast(t, HitChance.Medium);
                 }
@@ -254,7 +254,7 @@ namespace BlankAIO
                     {
                         return;
                     }
-                    if (!rt.IsDead && rt.IsVisible && rt.IsHPBarRendered)
+                    if (CanR(rt) && !rt.IsDead && rt.IsVisible && rt.IsHPBarRendered)
                     {
                         R.SPredictionCast(rt, HitChance.Medium);
                     }
