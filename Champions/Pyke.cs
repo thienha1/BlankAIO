@@ -113,7 +113,7 @@ namespace BlankAIO
             if (t == null) return;
             if (t != null && !ObjectManager.Player.IsRecalling())
             {
-                if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && t.IsVisible && t.IsHPBarRendered)
+                if (CanR(t) && Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && t.IsVisible && t.IsHPBarRendered)
                 {
                     R.SPredictionCast(t, HitChance.Medium);
                 }
@@ -254,7 +254,7 @@ namespace BlankAIO
                     {
                         return;
                     }
-                    if (!rt.IsDead && rt.IsVisible && rt.IsHPBarRendered)
+                    if (CanR(rt) && !rt.IsDead && rt.IsVisible && rt.IsHPBarRendered)
                     {
                         R.SPredictionCast(rt, HitChance.Medium);
                     }
@@ -294,23 +294,17 @@ namespace BlankAIO
             }
             
         }
-        internal static bool CanR(AIBaseClient tarR)
+        internal static bool CanR(AIHeroClient tarR)
         {
             if (tarR.HasBuffOfType(BuffType.Invulnerability)
                                 && tarR.HasBuffOfType(BuffType.SpellShield)
                                 && tarR.HasBuff("kindredrnodeathbuff") //Kindred Ult
-                                && tarR.HasBuff("BlitzcrankManaBarrierCD") //Blitz Passive
-                                && tarR.HasBuff("ManaBarrier") //Blitz Passive
                                 && tarR.HasBuff("FioraW") //Fiora W
                                 && tarR.HasBuff("JudicatorIntervention") //Kayle R
                                 && tarR.HasBuff("UndyingRage") //Trynd R
                                 && tarR.HasBuff("BardRStasis") //Bard R
                                 && tarR.HasBuff("ChronoShift") //Zilean R
                                 )
-            {
-                return false;
-            }
-            if (tarR == null)
             {
                 return false;
             }
